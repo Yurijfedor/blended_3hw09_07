@@ -47,7 +47,7 @@ const services = {
     let enteredBrand = prompt(`Please enter the selected restaurant`);
     console.log(enteredBrand);
     if (String(enteredBrand) === "null") {
-      services.showMenu();
+      return;
     }
     enteredBrand = enteredBrand.toLowerCase();
     let selectedBrand;
@@ -78,6 +78,7 @@ const services = {
       `you chose the ${selectedBrand} restaurant! Please choose the menu:  ${usersMenu}`
     );
   },
+
   addOrder() {},
   confirmOrder() {},
 };
