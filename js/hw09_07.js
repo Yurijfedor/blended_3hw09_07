@@ -34,6 +34,9 @@ const restaurants = [
   },
 ];
 
+let usersRestaurant = [];
+let usersOrder = [];
+
 const services = {
   showMenu() {
     alert(
@@ -69,8 +72,8 @@ const services = {
         this.getMenu();
     }
 
-    const usersRestaurant = restaurants.filter(
-      (restaurant) => restaurant.brand === selectedBrand
+    usersRestaurant = restaurants.filter(
+      ({ brand }) => brand === selectedBrand
     );
     const usersMenu = Object.entries(usersRestaurant[0].menu).flat(1).join(" ");
     console.log(usersMenu);
@@ -79,9 +82,51 @@ const services = {
     );
   },
 
-  addOrder() {},
-  confirmOrder() {},
+  addOrder() {
+    usersOrder = prompt(`Please enter the selected dishes with a space!`)
+      .toLocaleLowerCase()
+      .split(" ");
+  },
+
+  confirmOrder() {
+    let checkedUsersOrder = [];
+    let arrDishes = Object.keys(usersRestaurant[0].menu);
+    for (let i = 0; i <= usersOrder.length; i += 1) {
+      if (arrDishes.includes(usersOrder[i])) {
+        checkedUsersOrder.push(usersOrder[i]);
+      }
+    }
+    console.log(checkedUsersOrder);
+    // let filteredusersorder = checkedUsersOrder.filter(
+    //   (el, i, arr) => arr.indexOf(el) === i
+    // );
+    // ---------------------------------ЧОМУ НЕ ПРАЦЮЄ-------------------------------------------------
+    // let arrPrice = [];
+    // for (let i = 0; i <= checkedUsersOrder.length - 1; i += 1) {
+    //   arrPrice.push(usersRestaurant[0].menu.checkedUsersOrder[i])
+    // }
+    // console.log(arrPrice);
+    // ----------------------------------------------------------------------------------------------
+    let arrPrice = [];
+    for (const el of checkedUsersOrder) {
+      let indexOfDish = Object.entries(usersRestaurant[0].menu)
+        .flat(1)
+        .indexOf(el);
+      arrPrice.push(
+        Object.entries(usersRestaurant[0].menu).flat(1)[indexOfDish + 1]
+      );
+    }
+    let totalCost = arrPrice.reduce((acc, price) => acc + price, 0);
+    console.log(totalCost);
+
+    alert(
+      `your order is confirm! Your choice is ${checkedUsersOrder.join(
+        " "
+      )}, the total cost is ${totalCost}! Wait for your order for 10 minutes`
+    );
+  },
 };
+
 const torpedaDelivery = {
   order: [],
   chosenRestaurant: "",
@@ -94,3 +139,5 @@ torpedaDelivery.chooseRestaurant();
 
 services.showMenu();
 services.getMenu();
+services.addOrder();
+services.confirmOrder();
