@@ -38,9 +38,9 @@ let usersRestaurant = [];
 let usersOrder = [];
 
 const services = {
-  showMenu() {
+  showMenu(object) {
     alert(
-      `hello! Your available restourants: ${restaurants
+      `hello! Your available restourants: ${object
         .map(({ brand }) => brand)
         .join(" ")}`
     );
@@ -71,7 +71,9 @@ const services = {
         alert(`Your choice is invalid! Please try again!`);
         this.getMenu();
     }
-
+    // ---------------------ЗМІНЮЮ chosenRestaurant В ОБ'ЄКТІ torpedaDelivery-------------------------------------------
+    torpedaDelivery.chosenRestaurant = selectedBrand;
+    // -------------------------------------------------------------------------------------------------
     usersRestaurant = restaurants.filter(
       ({ brand }) => brand === selectedBrand
     );
@@ -97,6 +99,7 @@ const services = {
       }
     }
     console.log(checkedUsersOrder);
+    // ------------------------щоб не було дві однакові страви----------------------------------------
     // let filteredusersorder = checkedUsersOrder.filter(
     //   (el, i, arr) => arr.indexOf(el) === i
     // );
@@ -116,6 +119,9 @@ const services = {
         Object.entries(usersRestaurant[0].menu).flat(1)[indexOfDish + 1]
       );
     }
+    // --------------------змінюю order в об'єкті torpedaDelivery ---------------------------------------
+    torpedaDelivery.order = checkedUsersOrder;
+    // -----------------------------------------------------------------------------------------------
     let totalCost = arrPrice.reduce((acc, price) => acc + price, 0);
     console.log(totalCost);
 
@@ -130,14 +136,20 @@ const services = {
 const torpedaDelivery = {
   order: [],
   chosenRestaurant: "",
-  getAvailableRestaurants() {},
-  chooseRestaurant() {},
+  getAvailableRestaurants(object) {
+    return object.map(({ brand }) => brand).join(" ");
+  },
+  chooseRestaurant(object, name) {
+    return object.filter(({ brand }) => brand === name);
+  },
   chooseDishes() {},
 };
 
 torpedaDelivery.chooseRestaurant();
 
-services.showMenu();
+services.showMenu(restaurants);
 services.getMenu();
 services.addOrder();
 services.confirmOrder();
+
+const arrElements = ["chicken", "burger", "chicken", "burger"];
