@@ -85,12 +85,22 @@ const services = {
   },
 
   addOrder() {
-    usersOrder = prompt(`Please enter the selected dishes with a space!`)
-      .toLocaleLowerCase()
-      .split(" ");
+    usersOrder = prompt(`Please enter the selected dishes with a space!`);
+    if (String(usersOrder) === "null") {
+      return;
+    }
+    usersOrder = usersOrder.toLocaleLowerCase().split(" ");
+    for (let i = 0; i <= usersOrder.length - 1; i += 1) {
+      if (usersOrder[i] === "burgerxxl") {
+        usersOrder[i] = "burgerXXL";
+      }
+    }
   },
 
   confirmOrder() {
+    if (String(usersOrder) === "null") {
+      return;
+    }
     let checkedUsersOrder = [];
     let arrDishes = Object.keys(usersRestaurant[0].menu);
     for (let i = 0; i <= usersOrder.length; i += 1) {
@@ -128,7 +138,9 @@ const services = {
     alert(
       `your order is confirm! Your choice is ${checkedUsersOrder.join(
         " "
-      )}, the total cost is ${totalCost}! Wait for your order for 10 minutes`
+      )}, the total cost is ${totalCost}! Wait for your order for ${
+        usersRestaurant[0].deliveryTime
+      } minutes`
     );
   },
 };
@@ -139,17 +151,23 @@ const torpedaDelivery = {
   getAvailableRestaurants(object) {
     return object.map(({ brand }) => brand).join(" ");
   },
-  chooseRestaurant(object, name) {
-    return object.filter(({ brand }) => brand === name);
+  chooseRestaurant(object) {
+    return object.filter(({ brand }) => brand === this.chosenRestaurant);
   },
-  chooseDishes() {},
+  chooseDishes() {
+    return this.order.reduce((acc, dish) => {
+      return { ...acc, [dish]: acc[dish] ? acc[dish] + 1 : 1 };
+    }, {});
+  },
 };
-
-torpedaDelivery.chooseRestaurant();
 
 services.showMenu(restaurants);
 services.getMenu();
 services.addOrder();
 services.confirmOrder();
 
-const arrElements = ["chicken", "burger", "chicken", "burger"];
+torpedaDelivery.chooseRestaurant(restaurants);
+console.log(torpedaDelivery.chooseRestaurant(restaurants));
+
+torpedaDelivery.chooseDishes();
+console.log(torpedaDelivery.chooseDishes());
