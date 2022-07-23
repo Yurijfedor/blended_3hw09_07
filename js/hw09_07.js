@@ -101,27 +101,27 @@ const services = {
     if (String(usersOrder) === "null") {
       return;
     }
-    let checkedUsersOrder = [];
+    let normalisedUsersOrder = [];
     let arrDishes = Object.keys(usersRestaurant[0].menu);
     for (let i = 0; i <= usersOrder.length; i += 1) {
       if (arrDishes.includes(usersOrder[i])) {
-        checkedUsersOrder.push(usersOrder[i]);
+        normalisedUsersOrder.push(usersOrder[i]);
       }
     }
-    console.log(checkedUsersOrder);
+    console.log(normalisedUsersOrder);
     // ------------------------щоб не було дві однакові страви----------------------------------------
-    // let filteredusersorder = checkedUsersOrder.filter(
+    // let filteredusersorder = normalisedUsersOrder.filter(
     //   (el, i, arr) => arr.indexOf(el) === i
     // );
     // ---------------------------------ЧОМУ НЕ ПРАЦЮЄ-------------------------------------------------
     // let arrPrice = [];
-    // for (let i = 0; i <= checkedUsersOrder.length - 1; i += 1) {
-    //   arrPrice.push(usersRestaurant[0].menu.checkedUsersOrder[i])
+    // for (let i = 0; i <= normalisedUsersOrder.length - 1; i += 1) {
+    //   arrPrice.push(usersRestaurant[0].menu.normalisedUsersOrder[i])
     // }
     // console.log(arrPrice);
     // ----------------------------------------------------------------------------------------------
     let arrPrice = [];
-    for (const el of checkedUsersOrder) {
+    for (const el of normalisedUsersOrder) {
       let indexOfDish = Object.entries(usersRestaurant[0].menu)
         .flat(1)
         .indexOf(el);
@@ -130,13 +130,13 @@ const services = {
       );
     }
     // --------------------змінюю order в об'єкті torpedaDelivery ---------------------------------------
-    torpedaDelivery.order = checkedUsersOrder;
+    torpedaDelivery.order = normalisedUsersOrder;
     // -----------------------------------------------------------------------------------------------
     let totalCost = arrPrice.reduce((acc, price) => acc + price, 0);
     console.log(totalCost);
 
     alert(
-      `your order is confirm! Your choice is ${checkedUsersOrder.join(
+      `your order is confirm! Your choice is ${normalisedUsersOrder.join(
         " "
       )}, the total cost is ${totalCost}! Wait for your order for ${
         usersRestaurant[0].deliveryTime
